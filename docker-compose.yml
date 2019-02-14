@@ -48,6 +48,9 @@ services:
       - mariadb_data:/var/lib/mysql
     environment:
       - MYSQL_ROOT_PASSWORD=rootPassword
+      - MYSQL_DATABASE=wordpress
+      - MYSQL_USER=username
+      - MYSQL_PASSWORD=myPassword
     networks:
       - wp
   phpmyadmin:

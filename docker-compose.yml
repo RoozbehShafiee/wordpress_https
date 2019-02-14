@@ -8,7 +8,7 @@ services:
     expose:
       - 9000
     volumes:
-      - data:/data
+      - data:/var/www/html
     links:
       - mariadb
     environment:
@@ -28,8 +28,8 @@ services:
     ports:
       - 80:80
       - 443:443
-    volumes:
-      - data:/data
+    volumes_from:
+      - wordpress
     environment:
       - DOMAIN_NAME=example.com
       - EMAIL_ADDRESS=email@address.com
@@ -49,14 +49,14 @@ services:
     environment:
       - MYSQL_ROOT_PASSWORD=rootPassword
     networks:
-      - lemp
+      - wp
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     container_name: phpmyadmin
     restart: always
     ports:
       - 8080:80
-    link:
+    links:
       - mariadb
     environment:
       - PMA_HOST=mariadb

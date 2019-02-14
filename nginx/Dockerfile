@@ -28,7 +28,8 @@ ADD entrypoint.sh /entrypoint.sh
 ADD default /etc/nginx/conf.d/default
 ADD nginx.conf /etc/nginx/nginx.conf
 RUN chmod +x /entrypoint.sh \
-    && mkdir -p /run/nginx
+    && mkdir -p /run/nginx \
+    && mkdir -p /tmp/nginx
 
 ## data volume
 VOLUME  ["${DATA_DIR}"]

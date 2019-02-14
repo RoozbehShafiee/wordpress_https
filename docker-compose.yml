@@ -1,0 +1,71 @@
+version: "3"
+
+services:
+  wordpress:
+    image: "wordpress:php7.3-fpm-alpine"
+    container_name: wordpress
+    restart: always
+    expose:
+      - 9000
+    volumes:
+      - data:/data
+    links:
+      - mariadb
+    environment:
+      - WORDPRESS_DB_HOST=mariadb:3306
+      - WORDPRESS_DB_PASSWORD=myPassword
+      - WORDPRESS_DB_USER=username
+      - WORDPRESS_DB_NAME=wordpress
+      - WORDPRESS_TABLE_PREFIX=wp_
+      - WORDPRESS_DEBUG=1
+    networks:
+      - wp
+  nginx:
+    build: ./nginx
+    image: "nginx:alpine-certbot"
+    container_name: nginx
+    restart: always
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - data:/data
+    environment:
+      - DOMAIN_NAME=example.com
+      - EMAIL_ADDRESS=email@address.com
+    links:
+      - mariadb
+      - wordpress
+    networks:
+      - wp
+  mariadb:
+    image: "mariadb:latest"
+    container_name: mariadb
+    restart: always
+    expose:
+      - 3306
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=rootPassword
+    networks:
+      - lemp
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    restart: always
+    ports:
+      - 8080:80
+    link:
+      - mariadb
+    environment:
+      - PMA_HOST=mariadb
+      - MYSQL_ROOT_PASSWORD=rootPassword
+    networks:
+      - wp
+networks:
+  wp:
+    driver: bridge
+volumes:
+  data:
+  mariadb_data:

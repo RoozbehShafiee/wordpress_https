@@ -14,8 +14,8 @@ else
         if ! [[ -d "/etc/letsencrypt/live/${DOMAIN_NAME}" ]]; then
                 certbot --nginx -m ${EMAIL_ADDRESS} --agree-tos --no-eff-email --redirect --expand -d ${DOMAIN_NAME},www.${DOMAIN_NAME}
         fi
-        if ! [[ -f "/etc/ssl/certs/dhparam.pem" ]]; then
-                openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048
+        if ! [[ -f "/etc/nginx/dhparam/dhparam.pem" ]]; then
+                mkdir -p /etc/nginx/dhparam/ && /usr/bin/openssl dhparam -out /etc/nginx/dhparam/dhparam.pem 2048 && chmod 600 /etc/nginx/dhparam/dhparam.pem
         fi
 fi
 

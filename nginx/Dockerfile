@@ -12,9 +12,9 @@ ENV DATA_DIR=/data
 
 ## manage packages and repositories
 RUN apk add --update --no-cache \
+        ca-certificates \
         curl \
-        bash \
-        openssl \
+        libressl \
         certbot \
         python3 \
         py3-pip \

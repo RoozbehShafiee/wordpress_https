@@ -28,8 +28,8 @@ services:
     ports:
       - 80:80
       - 443:443
-    volumes_from:
-      - wordpress
+    volumes:
+      - data:/var/www/html
     environment:
       - DOMAIN_NAME=example.com
       - EMAIL_ADDRESS=email@address.com
